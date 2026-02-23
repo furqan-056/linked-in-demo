@@ -49,6 +49,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem 'rswag'
+  gem 'rspec-rails'
+  gem 'letter_opener'
 end
 
 group :development do
@@ -65,5 +68,8 @@ end
 gem "tailwindcss-rails", "~> 4.4"
 gem "dotenv-rails", groups: [:development, :test]
 gem "redis"
-
 gem 'connection_pool', '2.4.1'
+gem 'sidekiq'
+gem 'devise'
+gem "searchkick"
+gem "elasticsearch"
