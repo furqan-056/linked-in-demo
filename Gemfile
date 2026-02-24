@@ -73,3 +73,4 @@ gem 'sidekiq'
 gem 'devise'
 gem "searchkick"
 gem "elasticsearch"
+gem 'jwt'

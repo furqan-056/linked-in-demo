@@ -4,16 +4,33 @@
       <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 animate-pulse">
         <span class="text-white font-black text-xl">M</span>
       </div>
-      <span class="text-2xl font-black text-slate-800 tracking-tighter uppercase">Mini<span class="text-blue-600">Job</span></span>
+      <span class="text-2xl font-black text-slate-800 tracking-tighter uppercase">
+        Mini<span class="text-blue-600">Job</span>
+      </span>
     </div>
     
     <div class="flex items-center gap-4 md:gap-8">
-      <a href="/users/sign_in" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition tracking-wide">LOG IN</a>
-      <a href="/users/sign_up" class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-200">
-        JOIN NOW
-      </a>
+      <% if user_signed_in? %>
+
+        <%= link_to "LOGOUT",
+            destroy_user_session_path,
+            data: { turbo_method: :delete },
+            class: "text-sm font-bold text-slate-600 hover:text-red-600 transition tracking-wide" %>
+
+      <% else %>
+
+        <%= link_to "LOG IN",
+            new_user_session_path,
+            class: "text-sm font-bold text-slate-600 hover:text-blue-600 transition tracking-wide" %>
+
+        <%= link_to "JOIN NOW",
+            new_user_registration_path,
+            class: "bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-200" %>
+
+      <% end %>
     </div>
   </nav>
+
   <div class="flex flex-col lg:flex-row flex-1">
     <div class="relative flex-1 flex flex-col justify-center items-center lg:items-end px-8 py-16 lg:pr-20 group">
       <div class="absolute inset-0 bg-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -35,11 +52,13 @@
           Search with <span class="text-slate-900 font-bold">Elasticsearch</span>, apply in seconds with <span class="text-slate-900 font-bold">Turbo</span>, and track your career growth.
         </p>
 
-        <a href="/users/sign_up" class="inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white text-lg font-black rounded-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 active:scale-95 transition-all duration-300">
-          Get Hired Today
-        </a>
+        <%= link_to "Get Hired Today",
+            new_user_registration_path,
+            class: "inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white text-lg font-black rounded-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 active:scale-95 transition-all duration-300" %>
+
       </div>
     </div>
+
     <div class="relative flex-1 flex flex-col justify-center items-center lg:items-start px-8 py-16 lg:pl-20 bg-slate-900 group">
       <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-600 rounded-full blur-3xl opacity-10 group-hover:scale-125 transition-transform duration-1000"></div>
       
@@ -56,12 +75,14 @@
           Create company profiles, post openings, and manage your entire hiring pipeline from a <span class="text-white font-bold">single dashboard</span>.
         </p>
 
-        <a href="/users/sign_up" class="inline-flex items-center justify-center px-10 py-5 bg-white text-slate-900 text-lg font-black rounded-2xl shadow-2xl hover:bg-slate-100 hover:-translate-y-1 active:scale-95 transition-all duration-300">
-          Post a Job Opening
-        </a>
+        <%= link_to "Post a Job Opening",
+            new_user_registration_path,
+            class: "inline-flex items-center justify-center px-10 py-5 bg-white text-slate-900 text-lg font-black rounded-2xl shadow-2xl hover:bg-slate-100 hover:-translate-y-1 active:scale-95 transition-all duration-300" %>
+
       </div>
     </div>
   </div>
+
   <div class="bg-white border-t border-slate-50 py-8 shrink-0 overflow-hidden">
     <div class="flex justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition duration-500">
       <span class="font-black text-xl tracking-widest">RAILS 8</span>
