@@ -1,24 +1,33 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { duration: Number }
+  static targets = ["message"]
 
   connect() {
-    const duration = this.hasDurationValue ? this.durationValue : 4000
-    this.autoHide(duration)
+    this.showMessages()
   }
 
-  autoHide(duration) {
-    setTimeout(() => {
-      this.element.classList.add("animate-fade-out")
-    }, duration)
+  showMessages() {
+    this.messageTargets.forEach((msg) => {
+      setTimeout(() => {
+        msg.classList.add("opacity-100")
+      }, 50)
 
-    setTimeout(() => {
-      this.element.remove()
-    }, duration + 1000)
+      setTimeout(() => {
+        this.closeMessage(msg)
+      }, 4000)
+    })
   }
 
-  close() {
-    this.element.remove()
+  close(event) {
+    let msg = event.currentTarget.closest(".flash-message")
+    this.closeMessage(msg)
+  }
+
+  closeMessage(msg) {
+    if (!msg) return
+    msg.classList.remove("opacity-100")
+    msg.classList.add("opacity-0")
+    setTimeout(() => msg.remove(), 500)
   }
 }

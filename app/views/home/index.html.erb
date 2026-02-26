@@ -8,81 +8,52 @@
         Mini<span class="text-blue-600">Job</span>
       </span>
     </div>
-    
     <div class="flex items-center gap-4 md:gap-8">
       <% if user_signed_in? %>
-
-        <%= link_to "LOGOUT",
-            destroy_user_session_path,
-            data: { turbo_method: :delete },
-            class: "text-sm font-bold text-slate-600 hover:text-red-600 transition tracking-wide" %>
-
+        <%= link_to 'LOGOUT', destroy_user_session_path, data: { turbo_method: :delete }, class: "text-sm font-bold text-slate-600 hover:text-red-600 transition tracking-wide" %>
       <% else %>
-
-        <%= link_to "LOG IN",
-            new_user_session_path,
-            class: "text-sm font-bold text-slate-600 hover:text-blue-600 transition tracking-wide" %>
-
-        <%= link_to "JOIN NOW",
-            new_user_registration_path,
-            class: "bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-200" %>
-
+        <%= link_to 'LOG IN', new_user_session_path, class: "text-sm font-bold text-slate-600 hover:text-blue-600 transition tracking-wide" %>
+        <%= link_to 'JOIN NOW', new_user_registration_path, class: "bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-200" %>
       <% end %>
     </div>
   </nav>
-
   <div class="flex flex-col lg:flex-row flex-1">
-    <div class="relative flex-1 flex flex-col justify-center items-center lg:items-end px-8 py-16 lg:pr-20 group">
+    <div class="section-wrapper section-left lg:items-end group relative">
       <div class="absolute inset-0 bg-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
       <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-100 rounded-full blur-3xl opacity-40 group-hover:scale-125 transition-transform duration-1000"></div>
       <div class="relative z-10 max-w-lg text-center lg:text-right">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+        <div class="badge-blue mb-8">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
           </span>
           For Candidates
         </div>
-        
         <h1 class="text-5xl md:text-7xl font-black text-slate-900 leading-[0.9] mb-8 tracking-tighter">
-          FIND YOUR <br> <span class="text-blue-600">DREAM JOB.</span>
+          FIND YOUR <br>
+          <span class="text-blue-600">DREAM JOB.</span>
         </h1>
-        
         <p class="text-slate-500 text-lg md:text-xl mb-10 leading-relaxed font-medium">
           Search with <span class="text-slate-900 font-bold">Elasticsearch</span>, apply in seconds with <span class="text-slate-900 font-bold">Turbo</span>, and track your career growth.
         </p>
-
-        <%= link_to "Get Hired Today",
-            new_user_registration_path,
-            class: "inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white text-lg font-black rounded-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 active:scale-95 transition-all duration-300" %>
-
+        <%= link_to 'Get Hired Today', new_user_registration_path, class: "btn-primary btn-blue" %>
       </div>
     </div>
-
-    <div class="relative flex-1 flex flex-col justify-center items-center lg:items-start px-8 py-16 lg:pl-20 bg-slate-900 group">
+    <div class="section-wrapper section-right lg:items-start group relative">
       <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-600 rounded-full blur-3xl opacity-10 group-hover:scale-125 transition-transform duration-1000"></div>
-      
       <div class="relative z-10 max-w-lg text-center lg:text-left">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8">
-          Hiring Teams
-        </div>
-        
+        <div class="badge-dark mb-8">Hiring Teams</div>
         <h1 class="text-5xl md:text-7xl font-black text-white leading-[0.9] mb-8 tracking-tighter">
-          HIRE THE <br> <span class="text-blue-400">BEST TALENT.</span>
+          HIRE THE <br>
+          <span class="text-blue-400">BEST TALENT.</span>
         </h1>
-        
         <p class="text-slate-400 text-lg md:text-xl mb-10 leading-relaxed font-medium">
           Create company profiles, post openings, and manage your entire hiring pipeline from a <span class="text-white font-bold">single dashboard</span>.
         </p>
-
-        <%= link_to "Post a Job Opening",
-            new_user_registration_path,
-            class: "inline-flex items-center justify-center px-10 py-5 bg-white text-slate-900 text-lg font-black rounded-2xl shadow-2xl hover:bg-slate-100 hover:-translate-y-1 active:scale-95 transition-all duration-300" %>
-
+        <%= link_to 'Post a Job Opening', new_user_registration_path, class: "btn-primary btn-white" %>
       </div>
     </div>
   </div>
-
   <div class="bg-white border-t border-slate-50 py-8 shrink-0 overflow-hidden">
     <div class="flex justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition duration-500">
       <span class="font-black text-xl tracking-widest">RAILS 8</span>

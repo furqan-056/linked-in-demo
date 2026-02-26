@@ -35,3 +35,89 @@
 .animate-fade-out {
   animation: fade-out 1s ease-out forwards;
 }
+
+/* app/assets/stylesheets/application.css */
+
+/* BUTTONS */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 2.5rem; /* py-5 px-10 */
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 900; /* font-black */
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.2); /* shadow-2xl */
+  transition: all 0.3s; /* transition-all duration-300 */
+}
+
+.btn-blue {
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #fff;
+}
+.btn-blue:hover {
+  background-color: #1d4ed8; /* hover:bg-blue-700 */
+  transform: translateY(-0.25rem);
+}
+.btn-blue:active {
+  transform: scale(0.95);
+}
+
+.btn-white {
+  background-color: #fff; /* bg-white */
+  color: #111827; /* text-slate-900 */
+}
+.btn-white:hover {
+  background-color: #f1f5f9; /* hover:bg-slate-100 */
+  transform: translateY(-0.25rem);
+}
+.btn-white:active {
+  transform: scale(0.95);
+}
+
+/* BADGES */
+.badge-blue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  padding: 0.25rem 0.75rem; /* py-1 px-3 */
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.625rem; /* text-[10px] */
+  font-weight: 900; /* font-black */
+  text-transform: uppercase;
+  letter-spacing: 0.2em; /* tracking-[0.2em] */
+  background-color: #dbeafe; /* bg-blue-100 */
+  color: #2563eb; /* text-blue-700 */
+}
+
+.badge-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  background-color: #1e293b; /* bg-slate-800 */
+  color: #60a5fa; /* text-blue-400 */
+}
+
+/* HERO SECTIONS */
+.section-wrapper {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem; /* py-16 px-8 */
+}
+
+.section-left {
+  padding-right: 5rem; /* lg:pr-20 */
+}
+.section-right {
+  padding-left: 5rem; /* lg:pl-20 */
+  background-color: #111827; /* bg-slate-900 */
+}
