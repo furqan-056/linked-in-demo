@@ -9,14 +9,11 @@ class Api::BaseController < ActionController::API
 
   def authorize_request
     header = request.headers['Authorization']
-    token = header.split(' ').last if header
-
-    raise JwtTokenMissingError unless token
-
+    token  = header&.split(' ')&.last
     decoded = decode_token(token)
-    raise JwtTokenInvalidError unless decoded
+    user_id = decoded&.dig(0, 'user_id')
 
-    @current_user = User.find_by(id: decoded.dig(0, 'user_id'))
+    @current_user = User.find_by(id: user_id)
     raise AuthenticationError unless @current_user
   end
 

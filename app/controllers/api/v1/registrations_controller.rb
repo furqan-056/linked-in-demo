@@ -3,12 +3,9 @@ class Api::V1::RegistrationsController < Api::BaseController
 
   def create
     user = User.new(user_params)
-
     raise RegistrationError.new(user) unless user.save
-
     token = encode_token({ user_id: user.id })
-
-     render json: UserSerializer.with_auth_meta(user, token), status: :created
+    render json: UserSerializer.with_auth_meta(user, token), status: :created
   end
 
   private
