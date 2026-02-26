@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < Api::BaseController
-  skip_before_action :authorize_request, only: [:create]
+  skip_before_action :authorize_request, only: %i[create]
 
   def create
     user = User.find_by(email: login_params[:email])
@@ -7,11 +7,7 @@ class Api::V1::SessionsController < Api::BaseController
       raise AuthenticationError unless user&.valid_password?(login_params[:password])
       token = encode_token({ user_id: user.id })
 
-      render json: {
-        message: 'Login successful',
-        jwt: token,
-        user: UserSerializer.new(user).serializable_hash[:data][:attributes],
-      }, status: :ok
+      render json: UserSerializer.with_auth_meta(user, token), status: :ok
   end
 
   private

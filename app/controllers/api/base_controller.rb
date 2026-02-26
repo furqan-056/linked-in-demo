@@ -1,29 +1,11 @@
 class Api::BaseController < ActionController::API
-  include Pundit
+  include ApiErrorHandler
+
   before_action :authorize_request
 
   attr_reader :current_user
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  rescue_from AuthenticationError do |e|
-    render json: { error: e.message }, status: :unauthorized
-  end
-  rescue_from RegistrationError do |e|
-    render json: { error: e.message }, status: :unprocessable_entity
-  end
-  rescue_from JwtTokenMissingError do |e|
-    render json: { error: e.message }, status: :unauthorized
-  end
-  rescue_from JwtTokenInvalidError do |e|
-    render json: { error: e.message }, status: :unauthorized
-  end
-
   private
-
-  def user_not_authorized
-    render json: { error: "Forbidden" }, status: :forbidden
-  end
 
   def authorize_request
     header = request.headers['Authorization']

@@ -1,5 +1,8 @@
 class RegistrationError < StandardError
-  def initialize(msg = "Signup failed")
-    super
+  attr_reader :errors
+
+  def initialize(user)
+    @errors = user.errors.full_messages
+    super(@errors.join(', ').presence)
   end
 end

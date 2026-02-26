@@ -74,3 +74,4 @@ gem 'devise'
 gem "searchkick"
 gem "elasticsearch"
 gem 'jwt'
+gem 'jsonapi-serializer'

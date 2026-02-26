@@ -2,7 +2,7 @@ require 'sidekiq/web'
 require 'devise'
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users
   mount Sidekiq::Web => '/sidekiq'
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'

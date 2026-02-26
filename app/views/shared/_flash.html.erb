@@ -1,7 +1,7 @@
 <div id="flash-container" data-controller="flash" class="fixed top-6 right-6 z-50 space-y-2">
   <% flash.each do |type, message| %>
     <% next if message.blank? %>
-    <% color_class, icon = case type.to_sym; when :notice, :success then ["bg-green-500"]; when :alert, :error then ["bg-red-500"]; when :warning, :warn then ["bg-yellow-500"]; else ["bg-gray-500"]; end %>
+    <% color_class = flash_color_class(type) %>
     <div class="flash-message flex items-center justify-between text-white px-4 py-3 rounded shadow-lg min-w-[200px] transform transition-all duration-500 opacity-0 <%= color_class %>" data-flash-target="message">
       <div class="flex items-center gap-2">
         <span class="flash-text"><%= message %></span>
