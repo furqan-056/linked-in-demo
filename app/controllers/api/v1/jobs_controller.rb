@@ -1,6 +1,6 @@
 class Api::V1::JobsController < Api::BaseController
-  before_action :set_job, only: [:show, :update, :destroy]
-  before_action :authorize_job, only: [:show, :update, :destroy]
+  before_action :set_job, only: %i[show update destroy]
+  before_action :authorize_job, only: %i[show update destroy]
 
   def index
     jobs = policy_scope(Job)
@@ -13,25 +13,20 @@ class Api::V1::JobsController < Api::BaseController
 
   def create
     company = Company.find_by(id: params[:company_id])
-    raise ActiveRecord::RecordNotFound, "Company not found" unless company
-
     job = company.jobs.build(job_params)
     authorize job
-
-    raise JobError, job.errors.full_messages.join(", ") unless job.save
-
-    render json: { message: "Job created", job: serialized_job(job) }, status: :created
+    raise JobError.new(job) unless job.save
+    render json: { message: ResourceMessages.for_success(:job, :created), job: serialized_job(job) }, status: :created
   end
 
   def update
-    raise JobError, @job.errors.full_messages.join(", ") unless @job.update(job_params)
-
-    render json: { message: "Job updated", job: serialized_job(@job) }
+    raise JobError.new(@job) unless @job.update(job_params)
+    render json: { message: ResourceMessages.for_success(:job, :updated), job: serialized_job(@job) }
   end
 
   def destroy
     @job.destroy
-    render json: { message: "Job deleted" }
+    render json: { message: ResourceMessages.for_success(:job, :deleted) }
   end
 
   private
@@ -39,7 +34,7 @@ class Api::V1::JobsController < Api::BaseController
   def set_job
     @job = Job.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: "Job not found" }, status: :not_found
+    render json: { error: ResourceMessages.for_error(:job, :not_found) }, status: :not_found
   end
 
   def job_params
@@ -51,7 +46,7 @@ class Api::V1::JobsController < Api::BaseController
   end
 
   def serialized_job(job)
-    JobSerializer.new(job).serializable_hash[:data][:attributes]
+    JobSerializer.new(job).serializable_hash.dig(:data, :attributes)
   end
 
   def serialized_jobs(jobs)

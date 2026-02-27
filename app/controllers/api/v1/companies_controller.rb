@@ -1,6 +1,6 @@
 class Api::V1::CompaniesController < Api::BaseController
-  before_action :set_company, only: [:show, :update, :destroy]
-  before_action :authorize_company, only: [:show, :update, :destroy]
+  before_action :set_company, only: %i[show update destroy]
+  before_action :authorize_company, only: %i[show update destroy]
 
   def index
     companies = policy_scope(Company)
@@ -14,21 +14,18 @@ class Api::V1::CompaniesController < Api::BaseController
   def create
     company = current_user.companies.build(company_params)
     authorize company
-
-    raise CompanyError, company.errors.full_messages.join(", ") unless company.save
-
-    render json: { message: "Company created", company: serialized_company(company) }, status: :created
+    raise CompanyError.new(company) unless company.save
+    render json: { message: ResourceMessages.for_success(:company, :created), company: serialized_company(company) }, status: :created
   end
 
   def update
-    raise CompanyError, @company.errors.full_messages.join(", ") unless @company.update(company_params)
-
-    render json: { message: "Company updated", company: serialized_company(@company) }
+    raise CompanyError.new(@company) unless @company.update(company_params)
+    render json: { message: ResourceMessages.for_success(:company, :updated), company: serialized_company(@company) }
   end
 
   def destroy
     @company.destroy
-    render json: { message: "Company deleted" }
+    render json: { message: ResourceMessages.for_success(:company, :deleted) }
   end
 
   private
@@ -36,7 +33,7 @@ class Api::V1::CompaniesController < Api::BaseController
   def set_company
     @company = Company.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: "Company not found" }, status: :not_found
+    render json: { error: ResourceMessages.for_error(:company, :not_found) }, status: :not_found
   end
 
   def company_params
@@ -48,7 +45,7 @@ class Api::V1::CompaniesController < Api::BaseController
   end
 
   def serialized_company(company)
-    CompanySerializer.new(company).serializable_hash[:data][:attributes]
+    CompanySerializer.new(company).serializable_hash.dig(:data, :attributes)
   end
 
   def serialized_companies(companies)
