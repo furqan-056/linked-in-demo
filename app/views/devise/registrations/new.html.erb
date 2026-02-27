@@ -1,0 +1,50 @@
+<div class="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-slate-100 px-6">
+  <div class="w-full max-w-lg mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200 p-10 relative">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-200">
+        <span class="text-white font-black text-2xl">M</span>
+      </div>
+      <h2 class="text-4xl font-black text-slate-900 tracking-tight">
+        Join <span class="text-blue-600">MiniJob</span>
+      </h2>
+      <p class="text-slate-500 mt-2 text-sm">
+        Create your account and start your journey
+      </p>
+    </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <div class="mb-5">
+        <%= f.label :email, class: "block text-sm font-bold text-slate-700 mb-2" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: 'your@email.com', class: "w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" %>
+      </div>
+      <div class="mb-5">
+        <%= f.label :password, class: "block text-sm font-bold text-slate-700 mb-2" %>
+        <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'Minimum 6 characters', class: "w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" %>
+      </div>
+      <div class="mb-6">
+        <%= f.label :password_confirmation, class: "block text-sm font-bold text-slate-700 mb-2" %>
+        <%= f.password_field :password_confirmation, placeholder: 'Confirm your password', class: "w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" %>
+      </div>
+      <div class="mb-8">
+        <%= f.label :role, 'Sign up as', class: "block text-sm font-bold text-slate-700 mb-3" %>
+        <div class="grid grid-cols-2 gap-4">
+          <% User.roles.except('admin').keys.each do |role| %>
+            <label class="cursor-pointer group">
+              <%= f.radio_button :role, role, class: 'hidden peer' %>
+              <div class="peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 peer-checked:shadow-lg peer-checked:shadow-blue-100
+                          border border-slate-200 rounded-2xl px-4 py-4 text-center font-bold text-slate-700
+                          group-hover:border-blue-300 transition-all duration-200">
+                <%= role.titleize %>
+              </div>
+            </label>
+          <% end %>
+        </div>
+      </div>
+      <div>
+        <%= f.submit 'Create Account', class: "w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg hover:bg-blue-700 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 shadow-xl shadow-blue-200 cursor-pointer" %>
+      </div>
+    <% end %>
+    <div class="mt-8 pt-6 border-t border-slate-50 text-center text-sm text-slate-500">
+      <%= render 'devise/shared/links' %>
+    </div>
+  </div>
+</div>
