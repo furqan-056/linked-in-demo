@@ -14,7 +14,9 @@ class Api::V1::JobsController < Api::BaseController
   def create
     company = Company.find_by(id: params[:company_id])
     job = company.jobs.build(job_params)
+
     authorize job
+
     raise JobError.new(job) unless job.save
     render json: { message: ResourceMessages.for_success(:job, :created), job: serialized_job(job) }, status: :created
   end

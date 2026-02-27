@@ -14,6 +14,7 @@ class Api::V1::CompaniesController < Api::BaseController
   def create
     company = current_user.companies.build(company_params)
     authorize company
+
     raise CompanyError.new(company) unless company.save
     render json: { message: ResourceMessages.for_success(:company, :created), company: serialized_company(company) }, status: :created
   end
