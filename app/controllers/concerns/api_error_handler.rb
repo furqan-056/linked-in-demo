@@ -29,5 +29,9 @@ module ApiErrorHandler
     rescue_from Pundit::NotAuthorizedError do |exception|
       render json: { error: 'Forbidden', message: exception.message }, status: :forbidden
     end
+
+    rescue_from JobApplicationError do |e|
+      render json: { error: e.message }, status: :unprocessable_entity
+    end
   end
 end
