@@ -1,5 +1,5 @@
 class JobApplication < ApplicationRecord
-  belongs_to :user  # candidate
+  belongs_to :user
   belongs_to :job
 
   enum :status, { applied: 0, reviewing: 1, rejected: 2, interview: 3 }
