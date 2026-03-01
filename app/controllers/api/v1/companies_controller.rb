@@ -4,7 +4,7 @@ class Api::V1::CompaniesController < Api::BaseController
 
   def index
     companies = policy_scope(Company)
-    render json: serialized_companies(companies)
+    render json: companies.map { |company| serialized_company(company) }
   end
 
   def show
@@ -16,17 +16,20 @@ class Api::V1::CompaniesController < Api::BaseController
     authorize company
 
     raise CompanyError.new(company) unless company.save
-    render json: { message: ResourceMessages.for_success(:company, :created), company: serialized_company(company) }, status: :created
+    render json: { message: 'Company created', company: serialized_company(company) }, status: :created
   end
 
   def update
     raise CompanyError.new(@company) unless @company.update(company_params)
-    render json: { message: ResourceMessages.for_success(:company, :updated), company: serialized_company(@company) }
+    render json: { message: 'Company updated', company: serialized_company(@company) }
   end
 
   def destroy
-    @company.destroy
-    render json: { message: ResourceMessages.for_success(:company, :deleted) }
+    if @company.destroy
+      render json: { message: 'Company deleted' }, status: :ok
+    else
+      render json: { error: 'Failed to delete company', status: :unprocessable_entity }
+    end
   end
 
   private
@@ -34,7 +37,7 @@ class Api::V1::CompaniesController < Api::BaseController
   def set_company
     @company = Company.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: ResourceMessages.for_error(:company, :not_found) }, status: :not_found
+    render json: { error: 'Company not found' }, status: :not_found
   end
 
   def company_params
@@ -47,9 +50,5 @@ class Api::V1::CompaniesController < Api::BaseController
 
   def serialized_company(company)
     CompanySerializer.new(company).serializable_hash.dig(:data, :attributes)
-  end
-
-  def serialized_companies(companies)
-    companies.map { |company| serialized_company(company) }
   end
 end

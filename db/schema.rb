@@ -31,7 +31,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_053718) do
     t.string "location"
     t.date "expiry_date"
     t.integer "status"
-    t.bigint "company_id", null: false
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_jobs_on_company_id"

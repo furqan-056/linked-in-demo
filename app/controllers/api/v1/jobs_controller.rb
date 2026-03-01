@@ -4,7 +4,7 @@ class Api::V1::JobsController < Api::BaseController
 
   def index
     jobs = policy_scope(Job)
-    render json: serialized_jobs(jobs)
+    render json: jobs.map { |job| serialized_job(job) }
   end
 
   def show
@@ -18,17 +18,20 @@ class Api::V1::JobsController < Api::BaseController
     authorize job
 
     raise JobError.new(job) unless job.save
-    render json: { message: ResourceMessages.for_success(:job, :created), job: serialized_job(job) }, status: :created
+    render json: { message: 'Job created', job: serialized_job(job) }, status: :created
   end
 
   def update
     raise JobError.new(@job) unless @job.update(job_params)
-    render json: { message: ResourceMessages.for_success(:job, :updated), job: serialized_job(@job) }
+    render json: { message: 'Job updated', job: serialized_job(@job) }
   end
 
   def destroy
-    @job.destroy
-    render json: { message: ResourceMessages.for_success(:job, :deleted) }
+    if @job.destroy
+      render json: { message: 'Job Removed' }, status: :ok
+    else
+      render json: { error: 'Failed to delete job' }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -36,7 +39,7 @@ class Api::V1::JobsController < Api::BaseController
   def set_job
     @job = Job.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: ResourceMessages.for_error(:job, :not_found) }, status: :not_found
+    render json: { error: 'job not found' }, status: :not_found
   end
 
   def job_params
@@ -49,9 +52,5 @@ class Api::V1::JobsController < Api::BaseController
 
   def serialized_job(job)
     JobSerializer.new(job).serializable_hash.dig(:data, :attributes)
-  end
-
-  def serialized_jobs(jobs)
-    jobs.map { |job| serialized_job(job) }
   end
 end

@@ -27,10 +27,7 @@ module ApiErrorHandler
     end
 
     rescue_from Pundit::NotAuthorizedError do |exception|
-      render json: {
-        error: "Forbidden",
-        message: exception.message
-      }, status: :forbidden
+      render json: { error: 'Forbidden', message: exception.message }, status: :forbidden
     end
   end
 end
