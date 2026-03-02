@@ -52,6 +52,8 @@ group :development, :test do
   gem 'rswag'
   gem 'rspec-rails'
   gem 'letter_opener'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -63,6 +65,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'simplecov', require: false
 end
 
 gem "tailwindcss-rails", "~> 4.4"
@@ -74,4 +77,5 @@ gem 'devise'
 gem "searchkick"
 gem "elasticsearch"
 gem 'jwt'
+gem 'pundit'
 gem 'jsonapi-serializer'

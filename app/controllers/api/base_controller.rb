@@ -1,5 +1,6 @@
 class Api::BaseController < ActionController::API
   include ApiErrorHandler
+  include Pundit
 
   before_action :authorize_request
 
