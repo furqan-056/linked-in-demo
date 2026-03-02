@@ -75,8 +75,9 @@ gem 'connection_pool', '2.4.1'
 gem 'sidekiq'
 gem 'devise'
 gem "searchkick"
-gem "elasticsearch"
+gem 'elasticsearch', '~> 8.0'
 gem 'jwt'
 gem 'pundit'
 gem 'jsonapi-serializer'
 gem 'kaminari'
+gem 'searchkick'

@@ -1,4 +1,5 @@
 class Api::V1::JobsController < Api::BaseController
+  include JobSearchable
   before_action :set_job, only: %i[show update destroy]
   before_action :authorize_job, only: %i[show update destroy]
   before_action :set_company, only: %i[create]
@@ -6,6 +7,18 @@ class Api::V1::JobsController < Api::BaseController
   def index
     jobs = policy_scope(Job)
     render json: jobs.map { |job| serialized_job(job) }
+  end
+
+  def search
+    jobs = Job.search(search_query, where: build_filters, order: build_sort, page: params[:page] || 1, per_page: params[:per_page] || 10, includes: [:company])
+    render json: { jobs: jobs.map { |job| serialized_job(job) },
+      meta: {
+        total: jobs.total_count,
+        page: jobs.current_page,
+        per_page: jobs.per_page,
+        total_pages: jobs.total_pages
+      }
+    }, status: :ok
   end
 
   def show
