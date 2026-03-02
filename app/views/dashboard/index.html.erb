@@ -1,0 +1,71 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <% dashboard_stat_cards.each do |card| %>
+      <div class="dashboard-card <%= card[:bg_class] %>">
+        <p class="dashboard-card-title"><%= card[:title] %></p>
+        <p class="dashboard-card-number <%= card[:text_class] %>"><%= card[:value] %></p>
+      </div>
+    <% end %>
+  </div>
+  <% if current_user.recruiter? %>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="dashboard-list-card">
+        <h2 class="text-xl font-semibold mb-4">Your Jobs</h2>
+        <% if @jobs.any? %>
+          <ul class="space-y-2">
+            <% @jobs.each do |job| %>
+              <li class="dashboard-list-item">
+                <div>
+                  <p class="dashboard-list-item-title"><%= job.title %></p>
+                  <p class="dashboard-list-item-subtitle"><%= job.company.name %></p>
+                </div>
+                <%= link_to "View", job_path(job), class: "btn-blue text-sm px-3 py-1 rounded transition duration-200" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-500">You have not posted any jobs yet.</p>
+        <% end %>
+      </div>
+      <div class="dashboard-list-card">
+        <h2 class="text-xl font-semibold mb-4">Your Companies</h2>
+        <% if @companies.any? %>
+          <ul class="space-y-2">
+            <% @companies.each do |company| %>
+              <li class="dashboard-list-item">
+                <div>
+                  <p class="dashboard-list-item-title"><%= company.name %></p>
+                  <p class="dashboard-list-item-subtitle"><%= company.industry.presence || "Not specified" %></p>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-500">You do not have any companies yet.</p>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="dashboard-list-card">
+      <h2 class="text-xl font-semibold mb-4">Your Applications</h2>
+      <% if @applications.any? %>
+        <ul class="space-y-2">
+          <% @applications.each do |app| %>
+            <li class="dashboard-list-item">
+              <div>
+                <p class="dashboard-list-item-title"><%= app.job.title %></p>
+                <p class="dashboard-list-item-subtitle"><%= app.job.company.name %></p>
+              </div>
+              <span class="<%= application_status_badge(app.status) %>">
+                <%= app.status.titleize %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500">You have not applied for any jobs yet.</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -11,4 +11,16 @@ class User < ApplicationRecord
   enum :role, { admin: 0, recruiter: 1, candidate: 2 }
 
   validates :role, presence: true
+
+  def admin?
+    role == 'admin'
+  end
+
+  def recruiter?
+    role == 'recruiter'
+  end
+
+  def candidate?
+    role == 'candidate'
+  end
 end

@@ -79,3 +79,4 @@ gem "elasticsearch"
 gem 'jwt'
 gem 'pundit'
 gem 'jsonapi-serializer'
+gem 'kaminari'
