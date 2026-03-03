@@ -38,8 +38,6 @@ class Api::V1::JobsController < Api::BaseController
 
   def set_job
     @job = Job.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'job not found' }, status: :not_found
   end
 
   def job_params

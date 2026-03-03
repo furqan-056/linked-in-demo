@@ -30,6 +30,10 @@ module ApiErrorHandler
       render json: { error: 'Forbidden', message: exception.message }, status: :forbidden
     end
 
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      render json: { error: e.message }, status: :not_found
+    end
+
     rescue_from JobApplicationError do |e|
       render json: { error: e.message }, status: :unprocessable_entity
     end

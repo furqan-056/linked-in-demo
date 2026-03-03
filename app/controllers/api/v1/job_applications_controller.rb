@@ -13,7 +13,7 @@ class Api::V1::JobApplicationsController < Api::BaseController
 
   def create
     job = Job.find_by(id: params[:job_id])
-    return render json: { error: 'Job not found' }, status: :not_found unless job
+    return render json: { error: 'Job not found' }, status: :not_found unless job.present?
 
     application = JobApplication.new(user: current_user, job: job, status: :applied)
     authorize application
@@ -34,8 +34,6 @@ class Api::V1::JobApplicationsController < Api::BaseController
 
   def set_job_application
     @job_application = JobApplication.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Application not found' }, status: :not_found
   end
 
   def authorize_job_application

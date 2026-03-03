@@ -36,8 +36,6 @@ class Api::V1::CompaniesController < Api::BaseController
 
   def set_company
     @company = Company.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Company not found' }, status: :not_found
   end
 
   def company_params
