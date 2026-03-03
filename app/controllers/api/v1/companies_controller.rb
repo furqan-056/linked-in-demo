@@ -12,7 +12,7 @@ class Api::V1::CompaniesController < Api::BaseController
   end
 
   def create
-    company = current_user.companies.build(company_params)
+    company = Company.new(company_params.merge(user_id: current_user.id))
     authorize company
 
     raise CompanyError.new(company) unless company.save
@@ -21,7 +21,7 @@ class Api::V1::CompaniesController < Api::BaseController
 
   def update
     raise CompanyError.new(@company) unless @company.update(company_params)
-    render json: { message: 'Company updated', company: serialized_company(@company) }
+    render json: { message: 'Company updated', company: serialized_company(@company) }, status: :ok
   end
 
   def destroy
