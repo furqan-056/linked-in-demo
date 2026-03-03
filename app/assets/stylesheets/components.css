@@ -107,6 +107,7 @@
 .job-list-container{
   @apply overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl
 }
+
 .slider{
   @apply text-sm font-medium text-gray-700;
 }
