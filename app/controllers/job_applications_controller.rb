@@ -9,7 +9,7 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to job_path(@job), notice: "Applied successfully" }
+      format.html { redirect_to job_path(@job), notice: 'Applied successfully' }
     end
   end
 end
