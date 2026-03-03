@@ -3,6 +3,8 @@
 <% end %>
 <%= turbo_stream.prepend "flash-container" do %>
   <div class="flash-message flex items-center justify-between text-white px-4 py-3 rounded shadow-lg min-w-[200px] bg-green-600 opacity-100 transform transition-all duration-500 mt-6" data-controller="flash" data-flash-target="message">
-    <span>You have successfully applied for <%= @job.title %>!</span>
+    <span>
+      <%= @application.persisted? ? "You have successfully applied for #{@job.title}!" : @application.errors.full_messages.to_sentence %>
+    </span>
   </div>
 <% end %>

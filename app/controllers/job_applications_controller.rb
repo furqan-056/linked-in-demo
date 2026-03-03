@@ -1,15 +1,26 @@
 class JobApplicationsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_job, only: %i[create]
 
   def create
-    @job = Job.find(params[:job_id])
-    unless current_user.job_applications.exists?(job: @job)
-      @application = current_user.job_applications.create(job: @job, status: :applied)
-    end
+    @application = current_user.job_applications.new(job: @job, status: :applied)
 
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to job_path(@job), notice: 'Applied successfully' }
+    if @application.save
+      respond_to do |format|
+        format.turbo_stream
+        format.html
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to job_path(@job), alert: @application.errors.full_messages.to_sentence }
+      end
     end
+  end
+
+  private
+
+  def set_job
+    @job = Job.find(params[:job_id])
   end
 end
