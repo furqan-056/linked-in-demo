@@ -13,7 +13,7 @@ class Api::V1::JobsController < Api::BaseController
   end
 
   def create
-    job = Job.new(job_params.merge(company_id: @company.id))
+    job = Job.new(job_params.merge(company_id: @company))
     authorize job
 
     raise JobError.new(job) unless job.save

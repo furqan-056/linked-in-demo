@@ -3,7 +3,7 @@ class JobApplicationsController < ApplicationController
   before_action :set_job, only: %i[create]
 
   def create
-    @application = current_user.job_applications.new(job: @job, status: :applied)
+    @application = JobApplication.new(job: @job, status: :applied, user: current_user)
 
     if @application.save
       respond_to do |format|
