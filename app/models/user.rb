@@ -12,6 +12,8 @@ class User < ApplicationRecord
 
   validates :role, presence: true
 
+  after_create :send_welcome_email
+
   def admin?
     role == 'admin'
   end
@@ -22,5 +24,11 @@ class User < ApplicationRecord
 
   def candidate?
     role == 'candidate'
+  end
+
+  private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
   end
 end

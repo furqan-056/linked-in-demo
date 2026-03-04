@@ -1,0 +1,47 @@
+<div class="bg-gray-50 min-h-screen py-8 px-4">
+  <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-blue-600 text-white text-center py-6">
+      <h1 class="text-2xl font-bold">Weekly Job Digest</h1>
+      <p class="text-sm mt-1">Hi <%= @user.email %>, here are the new jobs for this week!</p>
+    </div>
+    <div class="p-6">
+      <% if @jobs.any? %>
+        <ul class="space-y-4">
+          <% @jobs.each do |job| %>
+            <li class="border rounded-lg p-4 hover:bg-gray-50 transition">
+              <h2 class="text-lg font-semibold text-gray-800"><%= job.title %></h2>
+              <p class="text-gray-600 mt-1">
+                Company: <span class="font-medium"><%= job.company.name %></span> |
+                Location: <span class="font-medium"><%= job.location %></span>
+              </p>
+
+              <% if job.salary.present? %>
+                <p class="text-gray-600 mt-1">Salary: <span class="font-medium">$<%= job.salary %></span></p>
+              <% end %>
+
+              <% if job.description.present? %>
+                <p class="text-gray-700 mt-2 text-sm line-clamp-3"><%= job.description %></p>
+              <% end %>
+
+              <% if job.expiry_date.present? %>
+                <p class="text-gray-500 mt-1 text-xs">Expires on: <%= job.expiry_date.strftime("%b %d, %Y") %></p>
+              <% end %>
+
+              <p class="mt-3">
+                <a href="<%= job_url(job) %>" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition text-sm">
+                  View Job
+                </a>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-600">No new jobs this week. Stay tuned!</p>
+      <% end %>
+    </div>
+
+    <div class="bg-gray-100 text-center py-4 text-gray-500 text-sm">
+      Good luck in your job search! <br>
+    </div>
+  </div>
+</div>

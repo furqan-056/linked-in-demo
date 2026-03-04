@@ -8,7 +8,12 @@ module JobSearchable
   end
 
   def build_filters
-    filters = { status: 'open' }
+    filters = {}
+
+    if %w[open closed].include?(params[:status])
+      filters[:status] = params[:status]
+    end
+
     filters[:location] = params[:location] if params[:location].present?
     filters[:company_industry] = params[:industry] if params[:industry].present?
 
