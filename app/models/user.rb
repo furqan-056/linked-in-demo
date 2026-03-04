@@ -5,6 +5,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
   has_many :companies, dependent: :destroy
+  has_many :job_applications
+  has_many :applied_jobs, through: :job_applications, source: :job
 
   enum :role, { admin: 0, recruiter: 1, candidate: 2 }
 

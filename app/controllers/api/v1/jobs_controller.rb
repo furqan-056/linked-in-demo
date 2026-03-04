@@ -1,6 +1,7 @@
 class Api::V1::JobsController < Api::BaseController
   before_action :set_job, only: %i[show update destroy]
   before_action :authorize_job, only: %i[show update destroy]
+  before_action :set_company, only: %i[create]
 
   def index
     jobs = policy_scope(Job)
@@ -12,9 +13,7 @@ class Api::V1::JobsController < Api::BaseController
   end
 
   def create
-    company = Company.find_by(id: params[:company_id])
-    job = company.jobs.build(job_params)
-
+    job = Job.new(job_params.merge(company_id: @company.id))
     authorize job
 
     raise JobError.new(job) unless job.save
@@ -23,7 +22,7 @@ class Api::V1::JobsController < Api::BaseController
 
   def update
     raise JobError.new(@job) unless @job.update(job_params)
-    render json: { message: 'Job updated', job: serialized_job(@job) }
+    render json: { message: 'Job updated', job: serialized_job(@job) }, status: :ok
   end
 
   def destroy
@@ -38,8 +37,6 @@ class Api::V1::JobsController < Api::BaseController
 
   def set_job
     @job = Job.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'job not found' }, status: :not_found
   end
 
   def job_params
@@ -52,5 +49,10 @@ class Api::V1::JobsController < Api::BaseController
 
   def serialized_job(job)
     JobSerializer.new(job).serializable_hash.dig(:data, :attributes)
+  end
+
+  def set_company
+    @company = Company.find_by(id: params[:company_id])
+    return render json: { error: 'Company not found' }, status: :not_found unless @company.present?
   end
 end
