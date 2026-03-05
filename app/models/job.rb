@@ -1,5 +1,5 @@
 class Job < ApplicationRecord
-  searchkick word_middle: [:title, :location], text_middle: [:description]
+  searchkick word_start: [:title, :location], word_middle: [:title, :location], text_middle: [:description]
   belongs_to :company
   validates :company, presence: true
 
