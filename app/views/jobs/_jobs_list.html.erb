@@ -2,7 +2,7 @@
   <% if jobs.any? %>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% jobs.each do |job| %>
-        <div class="relative bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl group">
+        <div class="relative bg-white rounded-2xl shadow-md border border-gray-100 job-list-container group">
           <div class="p-6 flex flex-col justify-between h-full">
             <% status_colors = { "open" => "bg-green-100 text-green-800", "closed" => "bg-red-100 text-red-800", "paused" => "bg-yellow-100 text-yellow-800" } %>
             <div class="flex justify-between items-start mb-2">
@@ -10,11 +10,11 @@
                 <%= job.title %>
               </h2>
               <span class="px-3 py-1 rounded-full text-xs font-semibold <%= status_colors[job.status] || 'bg-gray-100 text-gray-800' %>">
-                <%= job.status.titleize %>
+                <%= job.status&.titleize %>
               </span>
             </div>
             <p class="text-sm text-gray-500 mb-3">
-              <strong>Company:</strong> <%= job.company.name %>
+              <strong>Company:</strong> <%= job.company&.name %>
             </p>
             <p class="text-gray-600 text-sm leading-relaxed">
               <%= truncate(job.description, length: 120) %>
@@ -26,7 +26,7 @@
                   class: "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition duration-200 shadow-sm" %>
               <% if job.open? && current_user.candidate? %>
                 <span class="text-green-600 text-sm font-medium">
-                  Available to Apply
+                  Available
                 </span>
               <% end %>
             </div>

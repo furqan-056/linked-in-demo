@@ -99,3 +99,11 @@
 .back-link {
   @apply text-blue-600 hover:underline font-medium transition duration-200 hover:text-blue-800;
 }
+
+.apply-job-application{
+  @apply flash-message flex items-center justify-between text-white px-4 py-3 rounded shadow-lg min-w-[200px] bg-green-600 opacity-100 transform transition-all duration-500 mt-6
+}
+
+.job-list-container{
+  @apply overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl
+}

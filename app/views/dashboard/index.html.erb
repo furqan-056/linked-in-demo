@@ -18,7 +18,7 @@
               <li class="dashboard-list-item">
                 <div>
                   <p class="dashboard-list-item-title"><%= job.title %></p>
-                  <p class="dashboard-list-item-subtitle"><%= job.company.name %></p>
+                  <p class="dashboard-list-item-subtitle"><%= job.company&.name %></p>
                 </div>
                 <%= link_to "View", job_path(job), class: "btn-blue text-sm px-3 py-1 rounded transition duration-200" %>
               </li>
@@ -55,10 +55,10 @@
             <li class="dashboard-list-item">
               <div>
                 <p class="dashboard-list-item-title"><%= app.job.title %></p>
-                <p class="dashboard-list-item-subtitle"><%= app.job.company.name %></p>
+                <p class="dashboard-list-item-subtitle"><%= app.job.company&.name %></p>
               </div>
               <span class="<%= application_status_badge(app.status) %>">
-                <%= app.status.titleize %>
+                <%= app.status&.titleize %>
               </span>
             </li>
           <% end %>
