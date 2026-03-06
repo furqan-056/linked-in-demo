@@ -9,6 +9,13 @@ Rails.application.routes.draw do
 
   root "home#index"
   get "dashboard", to: "dashboard#index", as: :dashboard
+  resources :jobs, only: [:index, :show] do
+    resources :job_applications, only: [:create]
+  end
+
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+  end
 
   namespace :api do
     namespace :v1 do

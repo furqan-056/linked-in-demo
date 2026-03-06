@@ -12,7 +12,7 @@ class Api::V1::CompaniesController < Api::BaseController
   end
 
   def create
-    company = Company.new(company_params.merge(user_id: current_user.id))
+    company = Company.new(company_params.merge(user: current_user))
     authorize company
 
     raise CompanyError.new(company) unless company.save

@@ -1,0 +1,19 @@
+<header class="bg-gray-800 text-white shadow-md">
+  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div>
+      <%= link_to 'My Mini Job', root_path, class: "text-2xl font-bold hover:text-gray-300" %>
+    </div>
+    <nav class="flex space-x-4 items-center">
+      <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to 'Admin Dashboard', admin_dashboard_path, class: "hover:text-gray-300" %>
+        <% else %>
+          <%= link_to 'Dashboard', dashboard_path, class: "hover:text-gray-300" %>
+          <%= link_to 'Jobs', jobs_path, class: "hover:text-gray-300" %>
+        <% end %>
+        <%= button_to 'Logout', destroy_user_session_path, method: :delete,
+              class: "bg-red-600 hover:bg-red-700 text-white font-semibold px-3 py-1 rounded ml-4" %>
+      <% end %>
+    </nav>
+  </div>
+</header>

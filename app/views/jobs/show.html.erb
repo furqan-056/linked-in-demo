@@ -1,0 +1,68 @@
+<div class="max-w-4xl mx-auto mt-10">
+  <div class="bg-white shadow-xl rounded-3xl p-8 border border-gray-100 transition duration-300 hover:shadow-2xl">
+    <h1 class="job-main-title">
+      <%= @job.title %>
+    </h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="job-card">
+        <h2 class="job-card-title">Job Details</h2>
+        <p class="info-section">
+          <span class="info-label">Description:</span><br>
+          <%= @job.description %>
+        </p>
+        <p class="info-section"><span class="info-label">Salary:</span> <%= @job.salary.present? ? number_to_currency(@job.salary) : "Not specified" %></p>
+        <p class="info-section"><span class="info-label">Location:</span> <%= @job.location.presence || "Not specified" %></p>
+        <p class="info-section"><span class="info-label">Expiry Date:</span> <%= @job.expiry_date.present? ? @job.expiry_date.strftime("%b %d, %Y") : "N/A" %></p>
+        <p class="info-section"><span class="info-label">Status:</span>
+          <span class="<%= job_status_class(@job) %>"><%= @job.status.titleize %></span>
+        </p>
+      </div>
+      <div class="job-card">
+        <h2 class="job-card-title">Company Details</h2>
+        <p><span class="info-label">Name:</span> <%= @job.company.name %></p>
+        <p><span class="info-label">Industry:</span> <%= @job.company.industry.presence || "Not specified" %></p>
+        <p><span class="info-label">Website:</span>
+          <% if @job.company.website.present? %>
+            <a href="<%= @job.company.website %>" target="_blank" class="text-blue-600 hover:underline transition duration-200">
+              <%= @job.company.website %>
+            </a>
+          <% else %>
+            Not specified
+          <% end %>
+        </p>
+        <p><span class="info-label">Created At:</span> <%= @job.company.created_at.strftime("%b %d, %Y") %></p>
+      </div>
+    </div>
+    <% if @job.open? && current_user.candidate? %>
+      <div class="border-t pt-6">
+        <%= turbo_frame_tag "apply_button" do %>
+          <% if current_user.job_applications.exists?(job: @job) %>
+            <div class="<%= applied_notice_class(@job, current_user) %>">
+              You have already applied for this job!
+            </div>
+          <% else %>
+            <%= button_to "Apply for this Job",
+                job_job_applications_path(@job),
+                method: :post,
+                form: { data: { turbo_frame: "apply_button" } },
+                data: { turbo_confirm: "Are you sure you want to apply?" },
+                class: "btn-apply" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% elsif current_user.recruiter? %>
+      <div class="border-t pt-6">
+        <div class="notice notice-gray">See job details.</div>
+      </div>
+    <% else %>
+      <div class="border-t pt-6">
+        <div class="notice notice-gray">
+          This job is currently <%= @job.status.titleize %> and cannot be applied for.
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-6 text-left">
+    <%= link_to "← Back to Jobs", jobs_path, class: "back-link" %>
+  </div>
+</div>
