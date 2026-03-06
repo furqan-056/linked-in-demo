@@ -81,3 +81,5 @@ gem 'jsonapi-serializer'
 gem 'kaminari'
 gem 'searchkick'
 gem 'whenever', require: false
+gem "chartkick"
+gem 'groupdate'
