@@ -2,9 +2,7 @@ class CloseExpiredJobsJob < ApplicationJob
   queue_as :default
 
   def perform
-    Job.where("expiry_date < ? AND status != ?", Time.current, Job.statuses[:closed]).find_each do |job|
-      job.update(status: :closed)
-      Rails.logger.info "Closed expired job ##{job.id} - #{job.title}"
-    end
+    updated_count = Job.where("expiry_date < ? AND status != ?", Time.current, Job.statuses[:closed]).update_all(status: :closed)
+    Rails.logger.info "Closed #{updated_count} expired jobs"
   end
 end

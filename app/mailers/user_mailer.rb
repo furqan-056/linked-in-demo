@@ -7,12 +7,12 @@ class UserMailer < ApplicationMailer
   end
 
   def interview_scheduled(application)
-     set_application(application)
+    set_application(application)
     mail(to: @user.email, subject: 'Your interview is scheduled!')
   end
 
   def interview_status_update(application)
-     set_application(application)
+    set_application(application)
     mail(to: @user.email, subject: 'Update on your job application')
   end
 

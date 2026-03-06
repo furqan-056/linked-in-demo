@@ -24,14 +24,14 @@ set :output, '/home/xprolabs/www/linked_in_demo/log/cron.log'
 set :bundle_command, '/home/xprolabs/.rbenv/shims/bundle exec'
 set :rails_env, 'development'
 
-every 1.day, at: '1:00 am' do
+cron '0 1 * * *' do
   runner "CloseExpiredJobsJob.perform_later"
 end
 
-every :monday, at: '9:00 am' do
+cron '0 9 * * 1' do
   runner "WeeklyDigestJob.perform_later"
 end
 
-every 1.day, at: '2:00 am' do
+cron '0 2 * * *' do
   runner "NightlyReindexJob.perform_later"
 end
