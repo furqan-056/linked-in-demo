@@ -12,8 +12,11 @@ module JobSearchable
     filters[:location] = params[:location] if params[:location].present?
     filters[:company_industry] = params[:industry] if params[:industry].present?
 
-    if params[:min_salary].present? || params[:max_salary].present?
-      filters[:salary] = { gte: params[:min_salary]&.to_f || 0, lte: params[:max_salary]&.to_f || Float::INFINITY }
+    min = params[:min_salary].to_f
+    max = params[:max_salary].to_f
+
+    if min > 0 || max > 0
+      filters[:salary] = { gte: min > 0 ? min : 0, lte: max > 0 ? max : Float::INFINITY }
     end
 
     filters
@@ -21,8 +24,8 @@ module JobSearchable
 
   def build_sort
     case params[:sort_by]
-    when 'salary_asc' then { salary: :asc }
-    when 'salary_desc'  then { salary: :desc }
+    when 'salary_asc'  then { salary: :asc }
+    when 'salary_desc' then { salary: :desc }
     when 'oldest' then { created_at: :asc }
     when 'newest' then { created_at: :desc }
     else  { _score: :desc }
