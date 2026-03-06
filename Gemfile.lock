@@ -123,11 +123,11 @@ GEM
     elastic-transport (8.4.1)
       faraday (< 3)
       multi_json
-    elasticsearch (9.3.0)
+    elasticsearch (8.19.3)
       elastic-transport (~> 8.3)
-      elasticsearch-api (= 9.3.0)
-    elasticsearch-api (9.3.0)
-      base64
+      elasticsearch-api (= 8.19.3)
+      ostruct
+    elasticsearch-api (8.19.3)
       multi_json
     erb (6.0.1)
     erubi (1.13.1)
@@ -513,7 +513,7 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
-  elasticsearch
+  elasticsearch (~> 8.0)
   factory_bot_rails
   faker
   importmap-rails

@@ -22,7 +22,11 @@ Rails.application.routes.draw do
       post   '/signup', to: 'registrations#create'
       post   '/login',  to: 'sessions#create'
       resources :companies, only: %i[index show create update destroy]
-      resources :jobs, only: %i[index show create update destroy]
+      resources :jobs, only: %i[index show create update destroy] do
+        collection do
+            get :search
+          end
+        end
       resources :job_applications, only: %i[index show create update]
     end
   end
