@@ -6,4 +6,17 @@ class JobApplication < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :job_id, message: 'has already applied to this job' }
   validates :user, :job, :status, presence: true
+  after_update :send_status_email, if: :saved_change_to_status?
+
+
+  private
+
+  def send_status_email
+    case status
+    when 'interview'
+      UserMailer.interview_scheduled(self).deliver_later
+    when 'reviewing', 'rejected'
+      UserMailer.interview_status_update(self).deliver_later
+    end
+  end
 end

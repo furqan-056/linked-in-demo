@@ -81,3 +81,4 @@ gem 'pundit'
 gem 'jsonapi-serializer'
 gem 'kaminari'
 gem 'searchkick'
+gem 'whenever', require: false
