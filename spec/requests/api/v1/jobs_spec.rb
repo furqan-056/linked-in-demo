@@ -29,7 +29,7 @@ RSpec.describe 'Api::V1::Jobs', type: :request do
       it 'returns not found' do
         get '/api/v1/jobs/999', headers: headers
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)['error']).to eq('Job not found')
+        expect(JSON.parse(response.body)['error']).to eq('job not found')
       end
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe 'Api::V1::Jobs', type: :request do
     it 'deletes the job' do
       delete "/api/v1/jobs/#{job.id}", headers: headers
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)['message']).to eq('Job removed')
+      expect(JSON.parse(response.body)['message']).to eq('Job Removed')
     end
   end
 
