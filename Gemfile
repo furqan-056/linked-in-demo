@@ -83,3 +83,4 @@ gem 'searchkick'
 gem 'whenever', require: false
 gem "chartkick"
 gem 'groupdate'
+gem 'rack-attack'

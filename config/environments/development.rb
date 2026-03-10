@@ -73,4 +73,5 @@ Rails.application.configure do
   config.active_job.queue_adapter = :sidekiq
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
+  config.cache_store = :memory_store
 end
