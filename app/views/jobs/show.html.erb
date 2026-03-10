@@ -41,12 +41,13 @@
               You have already applied for this job!
             </div>
           <% else %>
-            <%= button_to "Apply for this Job",
-                job_job_applications_path(@job),
-                method: :post,
-                form: { data: { turbo_frame: "apply_button" } },
-                data: { turbo_confirm: "Are you sure you want to apply?" },
-                class: "btn-apply" %>
+            <%= form_with model: JobApplication.new, url: job_job_applications_path(@job), html: { multipart: true }, data: { turbo_frame: "apply_button" } do |f| %>
+              <div class="mb-4">
+                <%= f.label :resume, "Upload Resume", class: "block text-sm font-semibold mb-2" %>
+                <%= f.file_field :resume, required: true, class: "block w-full border border-gray-300 rounded-lg p-2" %>
+              </div>
+              <%= f.submit "Apply for this Job", data: { turbo_confirm: "Are you sure you want to apply?" }, class: "btn-apply" %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

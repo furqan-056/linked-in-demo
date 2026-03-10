@@ -1,3 +1,36 @@
-<h1>Admin Dashboard</h1>
-<p>Total Companies: <%= @companies_count %></p>
-<p>Total Jobs: <%= @jobs_count %></p>
+<h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
+  <div class="card">
+    <h2 class="card-title">Total Companies</h2>
+    <p class="card-value card-value-green"><%= @companies_count %></p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Total Jobs</h2>
+    <p class="card-value card-value-blue"><%= @jobs_count %></p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Open Jobs</h2>
+    <p class="card-value card-value-yellow"><%= @open_jobs_count %></p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Closed Jobs</h2>
+    <p class="card-value card-value-red"><%= @closed_jobs_count %></p>
+  </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Jobs by Status</h2>
+    <%= pie_chart @jobs_by_status_chart, colors: ["#facc15", "#ef4444"], height: "300px" %>
+  </div>
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Jobs Created Over Last 7 Days</h2>
+    <%= line_chart @jobs_by_day.transform_keys { |d| d.strftime("%Y-%m-%d") }, colors: ["#3b82f6"], height: "300px" %>
+  </div>
+  <div class="bg-white rounded-lg shadow p-6 md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Companies by Industry</h2>
+    <%= column_chart @companies_by_industry, colors: ["#3b82f6", "#f97316", "#facc15", "#10b981", "#8b5cf6"], height: "300px" %>
+  </div>
+</div>

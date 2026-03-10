@@ -101,7 +101,7 @@
 }
 
 .apply-job-application{
-  @apply flash-message flex items-center justify-between text-white px-4 py-3 rounded shadow-lg min-w-[200px] bg-green-600 opacity-100 transform transition-all duration-500 mt-6
+  @apply flex items-center justify-between text-white px-4 py-3 rounded shadow-lg min-w-[200px] bg-green-600 opacity-100 transform transition-all duration-500 mt-6
 }
 
 .job-list-container{
@@ -110,4 +110,32 @@
 
 .slider{
   @apply text-sm font-medium text-gray-700;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow p-6;
+}
+
+.card-title {
+  @apply text-xl font-semibold mb-2;
+}
+
+.card-value {
+  @apply text-4xl font-bold;
+}
+
+.card-value-green {
+  @apply text-green-600;
+}
+
+.card-value-blue {
+  @apply text-blue-600;
+}
+
+.card-value-yellow {
+  @apply text-yellow-500;
+}
+
+.card-value-red {
+  @apply text-red-500;
 }

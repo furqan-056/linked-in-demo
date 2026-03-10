@@ -4,6 +4,7 @@ class JobApplicationsController < ApplicationController
 
   def create
     @application = JobApplication.new(job: @job, status: :applied, user: current_user)
+    @application.resume = params.dig(:job_application, :resume)
 
     if @application.save
       respond_to do |format|

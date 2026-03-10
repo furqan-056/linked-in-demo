@@ -1,11 +1,598 @@
----
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: API V1
+  title: LinkedIn Demo API
   version: v1
-paths: {}
+  description: API V1 Documentation
+
 servers:
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: www.example.com
+  - url: http://localhost:3000
+    description: Development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    Company:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        website:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        company_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    JobApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+        job_id:
+          type: integer
+        user_id:
+          type: integer
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+paths:
+
+  # ─── AUTH ────────────────────────────────────────────────────────────────────
+
+  /api/v1/signup:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - password_confirmation
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: "password123"
+                password_confirmation:
+                  type: string
+                  example: "password123"
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: "#/components/schemas/User"
+        "422":
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/login:
+    post:
+      summary: Login and get JWT token
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: "#/components/schemas/User"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # ─── COMPANIES ───────────────────────────────────────────────────────────────
+
+  /api/v1/companies:
+    get:
+      summary: List all companies
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+        "401":
+          description: Unauthorized
+
+    post:
+      summary: Create a company
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: "Acme Corp"
+                description:
+                  type: string
+                  example: "A great company"
+                website:
+                  type: string
+                  example: "https://acme.com"
+                industry:
+                  type: string
+                  example: "software Development"
+      responses:
+        "201":
+          description: Company created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        "422":
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/companies/{id}:
+    get:
+      summary: Get a company
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        "200":
+          description: Company found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        "404":
+          description: Company not found
+
+    patch:
+      summary: Update a company
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                website:
+                  type: string
+      responses:
+        "200":
+          description: Company updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        "404":
+          description: Company not found
+        "422":
+          description: Validation errors
+
+    delete:
+      summary: Delete a company
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Company deleted
+        "404":
+          description: Company not found
+
+  # ─── JOBS ─────────────────────────────────────────────────────────────────────
+
+  /api/v1/jobs/search:
+    get:
+      summary: Search jobs
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search keyword (title, location, etc.)
+          example: "engineer"
+        - name: location
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "Karachi"
+        - name: company_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Matching jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Job"
+
+  /api/v1/jobs:
+    get:
+      summary: List all jobs
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Job"
+        "401":
+          description: Unauthorized
+
+    post:
+      summary: Create a job
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - company_id
+              properties:
+                title:
+                  type: string
+                  example: "Senior Rails Developer"
+                description:
+                  type: string
+                  example: "We are hiring..."
+                location:
+                  type: string
+                  example: "Karachi, Pakistan"
+                company_id:
+                  type: integer
+                  example: 1
+                salary:
+                  type: decimal
+                  example: 20000.0
+                expiry_date:
+                  type: date
+                  example: "2026-03-2"
+                status:
+                  type: integer
+                  example: "open"
+      responses:
+        "201":
+          description: Job created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "422":
+          description: Validation errors
+
+  /api/v1/jobs/{id}:
+    get:
+      summary: Get a job
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Job found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "404":
+          description: Job not found
+
+    patch:
+      summary: Update a job
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                location:
+                  type: string
+      responses:
+        "200":
+          description: Job updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "404":
+          description: Job not found
+
+    delete:
+      summary: Delete a job
+      tags:
+        - Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Job deleted
+        "404":
+          description: Job not found
+
+  # ─── JOB APPLICATIONS ────────────────────────────────────────────────────────
+
+  /api/v1/job_applications:
+    get:
+      summary: List all job applications
+      tags:
+        - Job Applications
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of job applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JobApplication"
+        "401":
+          description: Unauthorized
+
+    post:
+      summary: Apply for a job
+      tags:
+        - Job Applications
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - job_id
+              properties:
+                job_id:
+                  type: integer
+                  example: 1
+                resume:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Application submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobApplication"
+        "422":
+          description: Validation errors
+
+  /api/v1/job_applications/{id}:
+    get:
+      summary: Get a job application
+      tags:
+        - Job Applications
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Job application found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobApplication"
+        "404":
+          description: Not found
+
+    patch:
+      summary: Update a job application
+      tags:
+        - Job Applications
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - applied
+                    - reviewed
+                    - interview
+                    - rejected
+      responses:
+        "200":
+          description: Application updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobApplication"
+        "404":
+          description: Not found
